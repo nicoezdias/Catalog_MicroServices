@@ -1,0 +1,48 @@
+server:
+  port: 8086
+
+spring:
+  rabbitmq:
+    username: guest
+    password: guest
+    host: rabbitmq
+    port: 5672
+  data:
+    mongodb:
+      authentication-database: admin
+      username: rootuser
+      password: rootpass
+      database: final_catalogs
+      port: 27017
+      host: mongodb
+
+queue:
+  serie:
+    name: Serie
+  movie:
+    name: Movie
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      catalog: #Nombre de la instancia con la que vamos a trabajar
+        slidingWindowType: COUNT_BASED #Si queremos trabajar con conteo en base a catidad o tiempo
+        slidingWindowSize: 5 #El numero de llamadas que deben fallar
+        failureRateThreshold: 50 #Porcentaje de fallos para pasar de "open" a "half-open"
+        automaticTransitionFromOpenToHalfOpenEnabled: true #Habilitamos la transicion automatica de "half-open" a "open"
+        waitDurationInOpenState: 15000 #Duracion en estado "open" (ms)
+        permittedNumberOfCallsInHalfOpenState: 3 # cantidad de llamados permitidos en estado "half-open"
+        registerHealthIndicator: true #Hablilita a resilience4j a agregar info al endpoint /health de actuator
+        allowHealthIndicatorToFail: false #Pasar de status "UP" a "DOWN"
+
+#Habilitamos el endpoint de actuator
+management:
+  health:
+    circuitbreakers:
+      enabled: true
+
+info:
+  app:
+    name: ${spring.application.name}
+    description: Catalog Service created for Final
+    version: 2.0.0

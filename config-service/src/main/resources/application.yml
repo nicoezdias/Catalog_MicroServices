@@ -8,7 +8,7 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/nicoezdias/Api_Catalog
+          uri: https://github.com/nicoezdias/Catalog_MicroServices
           searchPaths: spring-cloud-config
 
 eureka:

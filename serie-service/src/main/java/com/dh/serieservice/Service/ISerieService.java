@@ -7,5 +7,5 @@ import java.util.List;
 public interface ISerieService {
     List<Serie> getListByGenre(String genre);
     List<Serie> getListByGenreError(String genre, Boolean throwError);
-    Serie save(Serie serie);
+    void save(Serie serie);
 }

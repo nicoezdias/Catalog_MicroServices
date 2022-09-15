@@ -40,8 +40,8 @@ public class CatalogService implements ICatalogService {
         this.mapper = mapper;
     }
 
-    @RabbitListener(queues = "${queue.movie.name}")
-    public CatalogDto save(Movie movie) {
+    @RabbitListener(queues = {"${queue.movie.name}"})
+    public void saveMovie(Movie movie) {
         LOG.info("Se recibio una movie a traves de Rabbitmq: " + movie.toString());
         Catalog catalog;
         List<Movie> movies;
@@ -49,7 +49,7 @@ public class CatalogService implements ICatalogService {
         if (!catalogOptional.isPresent()){
             catalog = new Catalog();
             catalog.setGenre(movie.getGenre());
-            catalog.setSeries(null);
+            catalog.setSeries(new ArrayList<>());
             movies = new ArrayList<>();
         }else {
             catalog = catalogOptional.get();
@@ -60,31 +60,29 @@ public class CatalogService implements ICatalogService {
         catalogRepository.save(catalog);
         CatalogDto catalogDto = mapper.convertValue(catalog,CatalogDto.class);
         LOG.info("Catalogo registrado correctamente: " + catalogDto);
-        return catalogDto;
     }
 
-//    @RabbitListener(queues = "${queue.serie.name}")
-//    public CatalogDto save(Serie serie) {
-//        LOG.info("Se recibio una serie a traves de Rabbitmq " + serie.toString());
-//        Catalog catalog;
-//        List<Serie> series;
-//        Optional<Catalog> catalogOptional = catalogRepository.findByGenre(serie.getGenre());
-//        if (!catalogOptional.isPresent()){
-//            catalog = new Catalog();
-//            catalog.setGenre(serie.getGenre());
-//            catalog.setMovies(null);
-//            series = new ArrayList<>();
-//        }else {
-//            catalog = catalogOptional.get();
-//            series = catalog.getSeries();
-//        }
-//        series.add(serie);
-//        catalog.setSeries(series);
-//        catalogRepository.save(catalog);
-//        CatalogDto catalogDto = mapper.convertValue(catalog,CatalogDto.class);
-//        LOG.info("Catalogo registrado correctamente: " + catalogDto);
-//        return catalogDto;
-//    }
+    @RabbitListener(queues = {"${queue.serie.name}"})
+    public void saveSerie(Serie serie) {
+        LOG.info("Se recibio una serie a traves de Rabbitmq " + serie.toString());
+        Catalog catalog;
+        List<Serie> series;
+        Optional<Catalog> catalogOptional = catalogRepository.findByGenre(serie.getGenre());
+        if (!catalogOptional.isPresent()){
+            catalog = new Catalog();
+            catalog.setGenre(serie.getGenre());
+            catalog.setMovies(new ArrayList<>());
+            series = new ArrayList<>();
+        }else {
+            catalog = catalogOptional.get();
+            series = catalog.getSeries();
+        }
+        series.add(serie);
+        catalog.setSeries(series);
+        catalogRepository.save(catalog);
+        CatalogDto catalogDto = mapper.convertValue(catalog,CatalogDto.class);
+        LOG.info("Catalogo registrado correctamente: " + catalogDto);
+    }
 
     @Override
     public CatalogDto getCatalogByGenreDB(String genere) {

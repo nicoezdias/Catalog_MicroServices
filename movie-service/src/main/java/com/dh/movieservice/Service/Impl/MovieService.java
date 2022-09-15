@@ -50,11 +50,10 @@ public class MovieService implements IMovieService {
     }
 
     @Override
-    public Movie save(Movie movie) {
+    public void save(Movie movie) {
         movieRepository.save(movie);
         LOG.info("Pelicula registrado correctamente: " + movie);
-        rabbitTemplate.convertAndSend(movieQueue,movie);
+        rabbitTemplate.convertAndSend(movieQueue, movie);
         LOG.info("La pelicula fue enviada a la cola");
-        return movie;
     }
 }

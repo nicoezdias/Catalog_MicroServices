@@ -23,5 +23,5 @@ queue:
 info:
   app:
     name: ${spring.application.name}
-    description: Movie Service created for Final
+    description: Serie Service created for Final
     version: 1.0.0

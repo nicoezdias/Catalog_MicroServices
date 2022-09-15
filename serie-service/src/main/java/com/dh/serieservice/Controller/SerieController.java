@@ -38,7 +38,8 @@ public class SerieController {
     }
 
     @PostMapping
-    public ResponseEntity<Serie> saveSerie(@RequestBody Serie serie) {
-        return ResponseEntity.ok().body(serieService.save(serie));
+    public ResponseEntity<String> saveSerie(@RequestBody Serie serie) {
+        serieService.save(serie);
+        return ResponseEntity.ok().body("La Serie '"+serie.getName()+"' se registro correctamente");
     }
 }

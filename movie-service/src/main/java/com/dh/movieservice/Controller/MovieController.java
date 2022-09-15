@@ -38,7 +38,8 @@ public class MovieController {
     }
 
     @PostMapping
-    public ResponseEntity<Movie> saveMovie(@RequestBody Movie movie) {
-        return ResponseEntity.ok().body(movieService.save(movie));
+    public ResponseEntity<String> saveMovie(@RequestBody Movie movie) {
+        movieService.save(movie);
+        return ResponseEntity.ok("La Pelicula '"+movie.getName()+"' se registro correctamente");
     }
 }

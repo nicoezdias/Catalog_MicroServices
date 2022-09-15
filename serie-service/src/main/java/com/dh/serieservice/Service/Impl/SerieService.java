@@ -49,11 +49,10 @@ public class SerieService implements ISerieService {
     }
 
     @Override
-    public Serie save(Serie serie) {
+    public void save(Serie serie) {
         serieRepository.save(serie);
         LOG.info("Serie registrado correctamente: " + serie);
         rabbitTemplate.convertAndSend(serieQueue, serie);
         LOG.info("La serie fue enviada a la cola");
-        return serie;
     }
 }

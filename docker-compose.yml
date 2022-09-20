@@ -11,9 +11,9 @@ services:
     ports:
       - "15672:15672"
       - "5672:5672"
-  mongodb:
+  mongo-serie:
     image: mongo
-    container_name: "mongodb"
+    container_name: "mongo-serie"
     command: mongod --auth
     environment:
       - MONGO_INITDB_DATABASE=admin
@@ -21,6 +21,16 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=rootpass
     ports:
       - "27017:27017"
+  mongo-catalog:
+    image: mongo
+    container_name: "mongo-catalog"
+    command: mongod --auth
+    environment:
+      - MONGO_INITDB_DATABASE=admin
+      - MONGO_INITDB_ROOT_USERNAME=rootuser
+      - MONGO_INITDB_ROOT_PASSWORD=rootpass
+    ports:
+      - "27027:27027"
   mysqldb:
     image: mysql:8.0
     container_name: "mysqldb"

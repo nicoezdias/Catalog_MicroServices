@@ -13,7 +13,7 @@ spring:
       username: rootuser
       password: rootpass
       database: final_catalogs
-      port: 27027
+      port: 27018
       host: mongo-catalog
 
 queue:

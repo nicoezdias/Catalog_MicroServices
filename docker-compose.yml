@@ -76,3 +76,7 @@ services:
     ports:
       - "8080:8080"
     restart: always
+
+networks:
+  default:
+    name: tp_final_network

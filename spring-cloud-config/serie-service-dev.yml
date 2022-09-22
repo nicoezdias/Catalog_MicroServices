@@ -13,7 +13,7 @@ spring:
       username: rootuser
       password: rootpass
       database: final_series
-      port: 27018
+      port: 27017
       host: mongo-serie
 
 queue:

@@ -33,7 +33,7 @@ services:
   #     - MONGO_INITDB_ROOT_USERNAME=rootuser
   #     - MONGO_INITDB_ROOT_PASSWORD=rootpass
   #   ports:
-  #     - "27017:27017"
+  #     - "27018:27017"
   mysqldb:
     image: mysql:8.0
     container_name: "mysqldb"

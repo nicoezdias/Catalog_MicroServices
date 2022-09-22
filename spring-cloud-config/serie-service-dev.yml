@@ -14,7 +14,7 @@ spring:
       password: rootpass
       database: final_series
       port: 27018
-      host: mongo-catalog
+      host: mongo-serie
 
 queue:
   serie:

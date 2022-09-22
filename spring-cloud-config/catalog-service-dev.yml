@@ -13,8 +13,8 @@ spring:
       username: rootuser
       password: rootpass
       database: final_catalogs
-      port: 27018
-      host: mongo-serie
+      port: 27017 #El puerto privado de nuestro contenedor de Docker, no el publico
+      host: mongo-catalog
 
 queue:
   serie:

@@ -23,17 +23,17 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=rootuser
       - MONGO_INITDB_ROOT_PASSWORD=rootpass
     ports:
+      - "27017:27017"
+  mongo-catalog:
+    image: mongo
+    container_name: "mongo-catalog"
+    command: mongod --auth
+    environment:
+      - MONGO_INITDB_DATABASE=admin
+      - MONGO_INITDB_ROOT_USERNAME=rootuser
+      - MONGO_INITDB_ROOT_PASSWORD=rootpass
+    ports:
       - "27018:27017"
-  # mongo-catalog:
-  #   image: mongo
-  #   container_name: "mongo-catalog"
-  #   command: mongod --auth
-  #   environment:
-  #     - MONGO_INITDB_DATABASE=admin
-  #     - MONGO_INITDB_ROOT_USERNAME=rootuser
-  #     - MONGO_INITDB_ROOT_PASSWORD=rootpass
-  #   ports:
-  #     - "27018:27017"
   mysqldb:
     image: mysql:8.0
     container_name: "mysqldb"

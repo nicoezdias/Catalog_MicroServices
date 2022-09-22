@@ -9,12 +9,12 @@ spring:
     port: 5672
   data:
     mongodb:
-      host: mongo-catalog
       authentication-database: admin
       username: rootuser
       password: rootpass
       database: final_catalogs
-      port: 27018
+      port: 27017
+      host: mongo-serie
 
 queue:
   serie:

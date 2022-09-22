@@ -58,8 +58,7 @@ public class CatalogService implements ICatalogService {
         movies.add(movie);
         catalog.setMovies(movies);
         catalogRepository.save(catalog);
-        CatalogDto catalogDto = mapper.convertValue(catalog,CatalogDto.class);
-        LOG.info("Catalogo registrado correctamente: " + catalogDto);
+        LOG.info("Catalogo registrado correctamente: " + catalog);
     }
 
     @RabbitListener(queues = {"${queue.serie.name}"})
@@ -80,15 +79,34 @@ public class CatalogService implements ICatalogService {
         series.add(serie);
         catalog.setSeries(series);
         catalogRepository.save(catalog);
-        CatalogDto catalogDto = mapper.convertValue(catalog,CatalogDto.class);
+        LOG.info("Catalogo registrado correctamente: " + catalog);
+    }
+
+    @Override
+    public void save(CatalogDto catalogDto) {
+        Catalog catalog;
+        Optional<Catalog> catalogOptional = catalogRepository.findByGenre(catalogDto.getGenre());
+        if (!catalogOptional.isPresent()){
+            catalog = new Catalog();
+            catalog.setGenre(catalogDto.getGenre());
+        } else {
+            catalog = catalogOptional.get();
+        }
+        catalog.setSeries(catalogDto.getSeries());
+        catalog.setMovies(catalogDto.getMovies());
+        catalogRepository.save(catalog);
         LOG.info("Catalogo registrado correctamente: " + catalogDto);
     }
 
     @Override
     public CatalogDto getCatalogByGenreDB(String genere) {
-        Catalog catalog = catalogRepository.findByGenre(genere).get();
-        CatalogDto catalogDto = mapper.convertValue(catalog,CatalogDto.class);
-        LOG.info("La busqueda fue exitosa: " + catalogDto);
+        CatalogDto catalogDto= new CatalogDto();
+        Optional<Catalog> catalogOptional = catalogRepository.findByGenre(genere);
+        if (catalogOptional.isPresent()){
+            Catalog catalog = catalogRepository.findByGenre(genere).get();
+            catalogDto = mapper.convertValue(catalog,CatalogDto.class);
+            LOG.info("La busqueda fue exitosa: " + catalogDto);
+        }
         return catalogDto;
     }
 
@@ -96,11 +114,10 @@ public class CatalogService implements ICatalogService {
     @CircuitBreaker(name = "catalog", fallbackMethod = "catalogFallbackMethod")
     public CatalogDto getCatalogByGenreFeign(String genere) {
         List<Movie> movies = movieService.findMovieByGenre(genere);
-
         List<Serie> series = serieService.findSerieByGenre(genere);
-
         CatalogDto catalogDto = new CatalogDto(genere, movies, series);
         LOG.info("La busqueda fue exitosa: " + catalogDto);
+        save(catalogDto);
         return catalogDto;
     }
 
@@ -109,11 +126,10 @@ public class CatalogService implements ICatalogService {
     @CircuitBreaker(name = "catalog", fallbackMethod = "catalogFallbackMethod")
     public CatalogDto getCatalogByGenreFeignError(String genere, Boolean movieErrors, Boolean serieErrors) {
         List<Movie> movies = movieService.findMovieByGenreError(genere, movieErrors);
-
         List<Serie> series = serieService.findSerieByGenreError(genere,serieErrors);
-
         CatalogDto catalogDto = new CatalogDto(genere, movies, series);
         LOG.info("La busqueda fue exitosa: " + catalogDto);
+        save(catalogDto);
         return catalogDto;
     }
 

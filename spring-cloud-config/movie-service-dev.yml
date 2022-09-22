@@ -12,9 +12,6 @@ spring:
     username: root
     password: rootpass
     driver-class-name: com.mysql.cj.jdbc.Driver
-  sql:
-    init:
-      data-locations: classpath:data-mysql.sql
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     show-sql: true

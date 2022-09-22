@@ -13,7 +13,6 @@ spring:
       username: rootuser
       password: rootpass
       database: final_catalogs
-      uri: mongodb://rootuser:rootpass@mongo-catalog:27017/?authMechanism=DEFAULT&authSource=admin
       port: 27017
       host: mongo-catalog
 

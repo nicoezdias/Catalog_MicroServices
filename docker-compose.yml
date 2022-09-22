@@ -1,4 +1,7 @@
 version: "3"
+networks:
+  default:
+    name: tp_final_network
 services:
   zipkin:
     image: openzipkin/zipkin
@@ -20,7 +23,7 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=rootuser
       - MONGO_INITDB_ROOT_PASSWORD=rootpass
     ports:
-      - "27017:27017"
+      - "27018:27017"
   mongo-catalog:
     image: mongo
     container_name: "mongo-catalog"
@@ -30,7 +33,7 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=rootuser
       - MONGO_INITDB_ROOT_PASSWORD=rootpass
     ports:
-      - "27018:27017"
+      - "27017:27017"
   mysqldb:
     image: mysql:8.0
     container_name: "mysqldb"
@@ -76,7 +79,3 @@ services:
     ports:
       - "8080:8080"
     restart: always
-
-networks:
-  default:
-    name: tp_final_network

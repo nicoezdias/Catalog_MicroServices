@@ -13,6 +13,7 @@ spring:
       username: rootuser
       password: rootpass
       database: final_series
+      uri: mongodb://rootuser:rootpass@mongo-serie:27018/?authMechanism=DEFAULT&authSource=admin
       port: 27018
       host: mongo-serie
 

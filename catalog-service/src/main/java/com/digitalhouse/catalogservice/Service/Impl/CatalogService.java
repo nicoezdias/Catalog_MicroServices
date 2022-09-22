@@ -106,6 +106,7 @@ public class CatalogService implements ICatalogService {
             Catalog catalog = catalogRepository.findByGenre(genere).get();
             catalogDto = mapper.convertValue(catalog,CatalogDto.class);
             LOG.info("La busqueda fue exitosa: " + catalogDto);
+            return catalogDto;
         }
         return null;
     }

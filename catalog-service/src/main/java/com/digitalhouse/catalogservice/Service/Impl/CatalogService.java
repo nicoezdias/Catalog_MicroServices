@@ -107,7 +107,7 @@ public class CatalogService implements ICatalogService {
             catalogDto = mapper.convertValue(catalog,CatalogDto.class);
             LOG.info("La busqueda fue exitosa: " + catalogDto);
         }
-        return catalogDto;
+        return null;
     }
 
     @Override
